@@ -1,8 +1,9 @@
 import {useState, useEffect} from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
-const AddPeserta = () => {
+
+const EditPeserta = () => {
     const [nama, setNama] = useState(''); 
     const [alamat, setAlamat] = useState(''); 
     const [jurusan, setJurusan] = useState(''); 
@@ -10,12 +11,14 @@ const AddPeserta = () => {
     const [email, setEmail] = useState('');
     
     const history = useHistory();
+    const {id} = useParams();
 
-    const savePeserta = async(e) => {
+
+    const updatePeserta = async(e) => {
         // agar saat submit tidak reload
         e.preventDefault();
 
-        await axios.post('http://localhost:5000/peserta', {
+        await axios.patch(`http://localhost:5000/peserta/${id}`, {
             nama: nama,
             alamat : alamat,
             jurusan: jurusan,
@@ -23,13 +26,25 @@ const AddPeserta = () => {
             email : email,
         });
         history.push('/');
+    }
 
+    useEffect(() => {
+        getPesertaById();
+    }, [])
+
+    const getPesertaById = async() => {
+        const response = await axios.get(`http://localhost:5000/peserta/${id}`)
+        setNama(response.data.nama);
+        setAlamat(response.data.alamat);
+        setJurusan(response.data.jurusan);
+        setNoHp(response.data.no_hp);
+        setEmail(response.data.email);
     }
 
 
     return (
         <div>
-            <form onSubmit={savePeserta}>
+            <form onSubmit={updatePeserta}>
                 <div className="mb-3 mt-5">
                     <h2 className='text-center'>Form Pendaftaran Peka 22</h2>
                     <label className="form-label">Nama Lengkap</label>
@@ -84,10 +99,10 @@ const AddPeserta = () => {
                     />
                 </div>
                 
-                <button type="submit" className="btn btn-primary">Simpan</button>
+                <button type="submit" className="btn btn-primary">Simpan Perubahan</button>
             </form>
         </div>
     )
 }
 
-export default AddPeserta;
+export default EditPeserta;

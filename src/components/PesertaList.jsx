@@ -20,6 +20,11 @@ const PesertaList = () => {
         setPeserta(response.data);
     }
 
+    const deletePeserta = async (id) => {
+        await axios.delete(`http://localhost:5000/peserta/${id}`);
+        getPeserta();
+    }
+
     return (
         <div>
             <h2 className='text-center'>Peserta Peka-22</h2>
@@ -47,8 +52,8 @@ const PesertaList = () => {
                             <td>0{mahasiswa.no_hp}</td>
                             <td>{mahasiswa.email}</td>
                             <td>
-                                <button className="button bg-primary me-2"><img src={edit}/></button>
-                                <button className="button bg-danger"><img src={hapus}/></button>
+                                <Link to={`/edit/${mahasiswa.id}`} className="btn btn-primary me-2"><img src={edit}/></Link>
+                                <button onClick={() => deletePeserta(mahasiswa.id)} className="btn btn-danger"><img src={hapus}/></button>
                             </td>
                         </tr>
                     ))}
