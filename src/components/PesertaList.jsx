@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import hapus from '../assets/icon/hapus.svg';
 import edit from '../assets/icon/edit.svg';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 const PesertaList = () => {
@@ -22,6 +23,12 @@ const PesertaList = () => {
 
     const deletePeserta = async (id) => {
         await axios.delete(`http://localhost:5000/peserta/${id}`);
+        Swal.fire({
+            title: 'Berhasil',
+            text: `Success Menghapus data`,
+            icon: 'error',
+            confirmButtonText: 'Oke'
+        })
         getPeserta();
     }
 
@@ -30,6 +37,7 @@ const PesertaList = () => {
             <h2 className='text-center'>Peserta Peka-22</h2>
             <br />
             <Link to='/add' className='btn btn-primary'>Add Peserta</Link>
+            <br />
             <table className='table'>
                 <thead className='table-light'>
                     <tr>
@@ -52,8 +60,8 @@ const PesertaList = () => {
                             <td>0{mahasiswa.no_hp}</td>
                             <td>{mahasiswa.email}</td>
                             <td>
-                                <Link to={`/edit/${mahasiswa.id}`} className="btn btn-primary me-2"><img src={edit}/></Link>
-                                <button onClick={() => deletePeserta(mahasiswa.id)} className="btn btn-danger"><img src={hapus}/></button>
+                                <Link to={`/edit/${mahasiswa.id}`} className="btn btn-primary me-2"><img src={edit} /></Link>
+                                <button onClick={() => deletePeserta(mahasiswa.id)} className="btn btn-danger"><img src={hapus} /></button>
                             </td>
                         </tr>
                     ))}

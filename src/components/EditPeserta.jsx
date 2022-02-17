@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 const EditPeserta = () => {
@@ -25,6 +26,12 @@ const EditPeserta = () => {
             no_hp : noHp,
             email : email,
         });
+        Swal.fire({
+            title: 'Berhasil',
+            text: `Success Merubah data ${nama}`,
+            icon: 'success',
+            confirmButtonText: 'Oke'
+        })
         history.push('/');
     }
 
